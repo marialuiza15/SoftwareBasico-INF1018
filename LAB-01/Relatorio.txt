@@ -1,0 +1,48 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+Onde tem a marcação ** é porque fiquei com alguma dúvida.
+
+4
+a) 
+Execuções:
+
+./ex1 4.0: O código não entra no if. A string de entrada é convertida para double 
+(como fazemos em Python com float(input())). Assim, entra "4.00" e sai 4.00, que 
+imprime 5.00, pois a função chamada soma 1 ao valor recebido antes de imprimir.
+
+./ex1: O código entra na condição em que o número de argumentos é menor que 2 
+(nesse caso, 0). Então, imprime o conteúdo do array de strings (argv), que fica 
+vazio porque nao passamos nada na chamada feita pelo terminal.
+
+ex1: Dá erro, porque o sistema não encontra o programa. O correto é usar ./ex1 
+porque indica o caminho no diretório INF1018/LAB-01/ex1. Sem o ./ procura em 
+outros diretórios mas não acha o arquivo.
+
+b) 
+gcc -Wall -o ex2 labaux.c ex2.c  -> esse comando faz de uma vez só: cria o 
+objeto dos dois arquivos, compilando-os e depois une eles, tornando um unico 
+arquivo que pode ser executado.
+
+c) 
+Ao retirar o cabeçalho que declara a função foo do outro arquivo, o programa 
+não encontra sua implementação. Com isso, o programa não encontra valor para 
+substituir no placeholder %.2f. Assim sempre resulta em 0, exceto quando o 
+código entra no if que trata o caso de número de argumentos diferente de dois.
+
+5
+c1 é char, que ocupa 1 byte, ou seja, em binario é 0001, e quando vai para 
+decimal pelo placeholder %d, exibe 1
+
+** c2: não entendi pq tem diferença quando armazenamos no char um numero ou um caracter?
+
+i é um interio, que ocupa 4 bytes, ou seja, em binario seria 0001 0000 0000 0000,
+que em hexadecimal fica como 01 00 00 00, que em decimal, é apenas 1 0 0 0. 
+O fato de o 1, o bit MENOS significativo ficar no incio, indica que a memória é litte endian
+
+** v: não entendi porque ficou 49 0. Aparentemente 49 é o valor decimal que 
+representa o caracter 1, mas não entendo o motivo
+
+** Na função dump, nao entendi de que forma com *p1 e p1++ conseguinmos andar byte a byte?
+- p1 é o endereço da minha memoria agr, exemplo 110. Ao somar 1, vamos para o próximo 
+endereço de ememória, o 111, somando mais 1, vamos para o endereço seguinte, o 112, etc.
+Seria isso?
