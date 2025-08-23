@@ -1,0 +1,123 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+Onde tem a marcação ** é porque fiquei com alguma dúvida.
+
+1
+a)
+int main (void) {
+  int i = 177;
+  dump(&i, sizeof(i));
+  return 0;
+}
+Essa função dump, recebe o endereço de uma variavel e o tamanho de bytes 
+dela, que varia de acordo com o tipo da variavel, nessa caso temos um 
+inteiro. Um int tem 4 byte, ou seja 32 bits, que resultam em 8 algarismos 
+hexadecimais, agrupados 2 a 2 em cada endereço de memória.
+
+experimentei o valor 177 para i. O resultado exibido no terminal foi: b1 
+no primeiro byte e 00 nos outros 3.
+
+O que foi feito por tras desse programa foi: ele pegou o valor em decimal 
+177 e converteu para binario, que resultou em: 1011 0001
+
+0000 0000 0000 0000 0000 0000 1011 0001 (completando com zeros a esquerda, certo?)
+
+que em hexadecimal fica:
+
+00 00 00 b1
+
+no terminal, ele imprimiu: 
+
+0x7ffe69621884 - b1
+0x7ffe69621885 - 00
+0x7ffe69621886 - 00
+0x7ffe69621887 - 00
+
+O que indica que a máquina é little ending, pois ordenou no byte MENOS 
+significativo para o mais significativo
+
+b)
+com o long inte, ele usou 8 espaços de memória, preenchendo com 8 pares 
+de algarismos hexadecimais. No terminal, ele imprimiu:
+
+0x7fff0a2127e0 - b1
+0x7fff0a2127e1 - 00
+0x7fff0a2127e2 - 00
+0x7fff0a2127e3 - 00
+0x7fff0a2127e4 - 00
+0x7fff0a2127e5 - 00
+0x7fff0a2127e6 - 00
+0x7fff0a2127e7 - 00
+
+c) 
+com short, ele usou 2 espaços de memoria com 2 pares de algarismos 
+hexadecimais. No terminal, ele imprimiu:
+
+0x7ffc52418126 - b1
+0x7ffc52418127 - 00
+
+d)
+para o tipo char, chamei a função dump da seguinte maneira:
+int main (void) {
+  char i = 5;
+  dump(&i, sizeof(i));
+  printf("\n");
+  char j = '5';
+  dump(&j, sizeof(j));
+  return 0;
+}
+
+com isso, o resultado no terminal foi:
+
+0x7fffd90b1466 - 05
+0x7fffd90b1467 - 35
+
+no primeiro caso, com o numero inteiro, ele armazenou o valor em um par 
+hexadecimal, ficando 05. No segundo caso, ele converteu '5' para o 
+equivalente na tabela ASCII, ou seja, 35.
+
+e) 
+int main (void) {
+  char p[] = "A \n$   ";
+  dump(p, sizeof(p));
+  return 0;
+}
+
+com essa string, que contém A, \, n, $ e alguns espaços em branco, no 
+terminal foi impresso:
+
+0x7fffba4eaf00 - 41
+0x7fffba4eaf01 - 20
+0x7fffba4eaf02 - 0a
+0x7fffba4eaf03 - 24
+0x7fffba4eaf04 - 20
+0x7fffba4eaf05 - 20
+0x7fffba4eaf06 - 20
+0x7fffba4eaf07 - 00
+
+Temos, pela tabela ASCII, que:
+(em decimal)
+A = 65 
+' ' = 32
+\ = 92
+n = 110
+$ = 36
+
+A = 65 = 0100 0001 = 41 (em hexadecimal)
+' ' = 32 = 0010 0000 = 20 (em hexadecimal)
+
+\ = 92 = 0101 1100 = 5C (em hexadecimal)  ** nao entendi pq no terminal exibiu 0a em hexadecimal e nao 5C
+n = 110 = 0110 1110 = 6E (em hexadecimal)  ** nao entendi pq no terminal exibiu 0a em hexadecimal e nao 6E
+
+$ = 36 = 0010 0100 = 24 (em hexadecimal)
+
+
+2
+a)
+eu entendi que é uma função que converte uma string para um inteiro, 
+mas eu nao entendi como isso acontece
+
+a*10 será sempre 0
+a será 0 + *s - '0' ** mas eu nao entendi o que seria *s - '0'
+
+b) 
