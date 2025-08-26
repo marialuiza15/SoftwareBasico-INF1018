@@ -110,14 +110,30 @@ A = 65 = 0100 0001 = 41 (em hexadecimal)
 n = 110 = 0110 1110 = 6E (em hexadecimal)  ** nao entendi pq no terminal exibiu 0a em hexadecimal e nao 6E
 
 $ = 36 = 0010 0100 = 24 (em hexadecimal)
+ 
+-----
 
+Após essa dúvida, exclareci com o professor que na verdade, \n é visto como um único caracter. 
+O que significa que:
+
+\n = 10 = 1010 = A (em hexadecimal)
 
 2
 a)
-eu entendi que é uma função que converte uma string para um inteiro, 
-mas eu nao entendi como isso acontece
+O caracter '1' em hexadecimal é 31, que em binário é 00110001.
 
-a*10 será sempre 0
-a será 0 + *s - '0' ** mas eu nao entendi o que seria *s - '0'
+A função string2num vai pegar o 00110001 e subtrais '0', o '0'
+em hexadecimal é 30., que em binário é 00110000
+
+a conta feita pela função será: 00110001 - 00110000 = 00000001 = 1 (inteiro)
+
+ou seja '1'-'0' = 1 (inteiro)
+
+a, que antes era 0, agora será: a = 0*10 + 1 (o a multiplica por 10 para manter a posição correta das casas decimais)
+
+a = 0 + 1 = 1
+a = 1*10 + 2 = 12
+a = 12*10 + 3 = 123
+a = 123*10 + 4 = 1234
 
 b) 

@@ -14,7 +14,7 @@ int main (void) {
   printf("==> %d\n", string2num("1234") + 1);
   printf("==> %d\n", string2num("1234") + string2num("1"));
   return 0;
-}
+},
 
 // a*10 será sempre 0
 // *s - '0'
