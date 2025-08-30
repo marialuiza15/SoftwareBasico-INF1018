@@ -136,4 +136,47 @@ a = 1*10 + 2 = 12
 a = 12*10 + 3 = 123
 a = 123*10 + 4 = 1234
 
-b) 
+b) Não enfrentei dificuldade para fazer a letra b, no entanto, não consegui fazer a letra c funcionar. 
+Vou deixar abaixo o que tentei desenvolver, e gerou erros ao compilar.
+
+c) Acabei me confundindo e me perdendo com os ponteiros... 
+
+  int string2num(char *s, char *divsor) {
+  int a = 0;
+  int divisor = *(int *)divsor; //pega o valor apontado
+
+  for (; *s; s++){
+     // nao entendi esse for?????
+    a = a*10 + (*s - '0');
+  }
+
+  int base = 2;
+  int resto = 0;
+  int quo = 0;
+  int dividendo = a;
+  int final = 0;
+
+  if (isdigit(divisor)){
+      for (;base<=10;base++){
+      resto = dividendo%divisor;
+      quo = dividendo/divisor;
+      dividendo = quo;
+
+      final = final + (resto * pow(10, (base-2)));
+      printf("final %d", final);
+    }
+  }
+  else{
+    int limite = divisor;  
+
+    for (;base<=limite;base++){
+      resto = dividendo%divisor;
+      quo = dividendo/divisor;
+      dividendo = quo;
+
+      final = final + (resto * pow(10, (base-2)));
+      printf("final %d", final);
+    }
+  }
+  return final;
+}
