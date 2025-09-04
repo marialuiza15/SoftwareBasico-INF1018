@@ -9,25 +9,14 @@ O byte menos significativo de x é 21, mas não entendi no enunciado se deveria 
 significativo de y e o restante em 0, ou mante-lo como o menos significativo de y e o restante em zero
 
 2)
-Eu já sabia que para fazer isso sem usar resto, teria que olhar para o binario, pois os pares sempre 
-terminam em 0 em binario, e os impares em 1.
+pra contar os '1' vamos olhar para o ultimo bit, ou seja, fazer o and com 1.
+para 'percorrer' o valor binario e contar os bits '1' seguintas, vamos shiftar
+1 a cada iteração
 
-Demorei a pensar como faria para pegar o ultimo bit do inteiro para poder ver se é 0 ou 1.
 
-vamos usar o AND, que só mantem o 1 se ambos foram 1
+3)
+para pegar o lado direito do hexadecimal, faremos x&F, assim apagamos os digitos do lado esquerdo, mantendo só o lado direito
+depois faremos o inverso para pegar o hexadecimal do lado esquerdo, fazendo x%F0.
 
-Ex: 1110 (par) -> 1110 & 1 
-
-   1110
-&  0001
-   0000
-
-Ex: 1111 (impar) -> 1111 & 1
-
-   1111
-&  0001
-   0001
-
-Ou seja, se o resultado no int & 1 for 0, o número será par, e se for 1, o número será impar.
-
-** Não entedi pq ele marcou ambos como pares??
+para inverter, vamos shifftar 4 para a esquerda em um e 4 para a direita no outro.
+Depois faremos um outro para unis os dois lados, agora ja trocados de lugar.
