@@ -15,8 +15,18 @@ para 'percorrer' o valor binario e contar os bits '1' seguintas, vamos shiftar
 
 
 3)
-para pegar o lado direito do hexadecimal, faremos x&F, assim apagamos os digitos do lado esquerdo, mantendo só o lado direito
-depois faremos o inverso para pegar o hexadecimal do lado esquerdo, fazendo x%F0.
+
+a)
+para pegar o lado direito do hexadecimal, faremos x&F, assim apagamos os digitos do lado esquerdo, 
+mantendo só o lado direito depois faremos o inverso para pegar o hexadecimal do lado esquerdo, 
+fazendo x%F0.
 
 para inverter, vamos shifftar 4 para a esquerda em um e 4 para a direita no outro.
 Depois faremos um outro para unis os dois lados, agora ja trocados de lugar.
+
+b) 
+Os n bits mais significativos que “saem” pela esquerda são colocados no fim
+
+pra isso, a gente shifta todos os bits até pegar o "1° da fila" e salva em a, depois shifta 
+o bit normalmente e coloca o resultado em b. Por fim faço um ou entre a e b, assim, a passa 
+a ocupar a ultima posição
