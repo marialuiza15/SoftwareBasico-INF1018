@@ -1,0 +1,66 @@
+1) c é uma variavel que guarda 150.
+quando chama-se a função dump, passamos o endereço de c, que é recebido por um ponteiro *p do tipo void, ou seja, generico
+
+pra poder utilizar esse pontiero dentro da função, precisamos convertar para um tipo especifico, ensse caso, convertemos para char.
+
+Então, *p1 tem o endereço de memória de c.
+
+n é o tamanho em bytes de c, como ele é char, n=1
+
+então, na primeira chamada a dump, o while irá acontecer apenas uma vez. 
+No while, ele vai printar 
+
+p1 é o pontiero, contém apenas o endereço de c
+p1* contém o valor guardado no endereço apontado por p1
+
+então, no while, ele vai percorrendo os bytes e exibe o endereço de c e o conteúdo dele a cada iteração
+
+então:
+
+dump(&c, sizeof(c)) -> vai exibir 1 endreço e ** não consigo identificar o que ele exibiria em conteudo, ele 1° converte para unsigned e depois printa oq?
+dump(&s, sizeof(s)); 
+-> vai exibir os 2 endereços e
+-3 sined
+3 unsigned = 0000 0000 0000 0011 (2 bytes do short)
+
+invertendo: 1111 1111 1111 1100
+somando 1: 1111 1111 1111 1101
+
+1111 1111 1111 1100 = ff fd
+
+
+dump(&i, sizeof(i)); -> vai exibir 4 endereços e
+-151 signed
+151 unsigned = 0000 0000 0000 0000 0000 0000 1001 0111 (4 bytes de int)
+
+invertendo: 1111 1111 1111 1111 1111 1111 0110 1000
+somando 1: 1111 1111 1111 1111 1111 1111 0110 1001
+
+1111 1111 1111 1111 1111 1111 0110 1001 = ff ff ff 69
+
+ao rodar o código e imprimir, deu o seguinte:
+
+dump de c: 
+0x7ffcf51ac131 - 96 (não consegui fazer a conta para chegar a 96)
+dump de s: 
+0x7ffcf51ac132 - fd (acertei)
+0x7ffcf51ac133 - ff
+dump de i: 
+0x7ffcf51ac134 - 69 (acertei)
+0x7ffcf51ac135 - ff
+0x7ffcf51ac136 - ff
+0x7ffcf51ac137 - ff
+
+2) 
+
+short 1 = -32765 (signed)
+32765 (unsigned) = 0111 1111 1111 1101
+invertendo: 1000 0000 0000 0010
+somando 1: 1000 0000 0000 0011 = 8 0 0 3
+
+não consegui entender o restante do código, me confundi com a parte 
+que printa 8 0 0 3 como um inteiro, não sei se pra isso ele é convertido 
+pra outra base, confesso que me confundi com essa parte
+
+
+
