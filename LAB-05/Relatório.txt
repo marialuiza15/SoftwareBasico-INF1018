@@ -1,0 +1,240 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+Onde tem a marcação ** é porque fiquei com alguma dúvida.
+
+1)
+int b[2] ocupa 2*4 = 8 bytes 
+b[0] = 4 bytes e b[1] = 4 bytes
+
+short a[2][3] ocupa 2*3*2 = 12 bytes pois tem 2 linhas, 3 colunas e, por ser short, um sizeof de 2 bytes
+
+ao executar o código chamando a função dump, temos:
+
+b: 
+0x7ffd149dd8b4 - 00
+0x7ffd149dd8b5 - 00
+0x7ffd149dd8b6 - 00
+0x7ffd149dd8b7 - 00
+0x7ffd149dd8b8 - 01
+0x7ffd149dd8b9 - 00
+0x7ffd149dd8ba - 00
+0x7ffd149dd8bb - 00
+a: 
+0x7ffd149dd8bc - 00
+0x7ffd149dd8bd - 00
+0x7ffd149dd8be - 01
+0x7ffd149dd8bf - 00
+0x7ffd149dd8c0 - 02
+0x7ffd149dd8c1 - 00
+0x7ffd149dd8c2 - 03
+0x7ffd149dd8c3 - 00
+0x7ffd149dd8c4 - 04
+0x7ffd149dd8c5 - 00
+0x7ffd149dd8c6 - 05
+0x7ffd149dd8c7 - 00
+
+Ou seja, b ocupa 8 bytes e a ocupa 12 bytes, corretamente.
+
+2)
+
+0x7fffeea0e49c - 5a <- a
+0x7fffeea0e49d - 78 <- a
+0x7fffeea0e49e - 00 <- a
+0x7fffeea0e49f - 00 <- a
+0x7fffeea0e4a0 - 90 <- b
+0x7fffeea0e4a1 - e5 <- b
+0x7fffeea0e4a2 - a0 --
+0x7fffeea0e4a3 - ee --
+0x7fffeea0e4a4 - ff <- c
+0x7fffeea0e4a5 - 7f <- c
+0x7fffeea0e4a6 - 00 <- c
+0x7fffeea0e4a7 - 00 <- c
+
+a struct ocupou 12 bytes na memoria, pois o short de 2 bytes no meio da struct gera 2 paddings
+
+a struct nao foi preenchida, por isso no endereço reservado a ela só tem lixo.
+
+rodando o segundo modleo de struct, que coloca valores em a, b e c, temos:
+
+0x7ffde7eb182c - a4 <- a
+0x7ffde7eb182d - a3 <- a
+0x7ffde7eb182e - a2 <- a
+0x7ffde7eb182f - a1 <- a
+0x7ffde7eb1830 - b2 <- b
+0x7ffde7eb1831 - b1 <- b
+0x7ffde7eb1832 - eb --
+0x7ffde7eb1833 - e7 --
+0x7ffde7eb1834 - c4 <- c
+0x7ffde7eb1835 - c3 <- c
+0x7ffde7eb1836 - c2 <- c
+0x7ffde7eb1837 - c1 <- c
+
+agora da pra ver cada variavel da estrutura e o padding após o short
+
+3) 
+
+a)
+char c1 = 1 byte
+3 paddings para chegar em multiplo de 4
+int i = 4 bytes
+char c2 = 1 byte
+3 paddings para chegar em multiplo de 4 e deixar a struct pronta para a próxima
+
+0x7ffe18fd9c8c - c1 <- c1
+0x7ffe18fd9c8d - 7b --
+0x7ffe18fd9c8e - 00 --
+0x7ffe18fd9c8f - 00 --
+0x7ffe18fd9c90 - 04 <- i
+0x7ffe18fd9c91 - 03 <- i
+0x7ffe18fd9c92 - 02 <- i
+0x7ffe18fd9c93 - 01 <- i
+0x7ffe18fd9c94 - c2 <- c2
+0x7ffe18fd9c95 - 7f --
+0x7ffe18fd9c96 - 00 --
+0x7ffe18fd9c97 - 00 --
+
+b)
+long l = 8 bytes
+char c = 1 byte
+3 paddings para chegar em multiplo de 8 e deixar a struct pronta para a próxima que, como ela, começara com long.
+
+0x7fff085bbf10 - 08 <- l
+0x7fff085bbf11 - 07 <- l
+0x7fff085bbf12 - 06 <- l
+0x7fff085bbf13 - 05 <- l
+0x7fff085bbf14 - 04 <- l
+0x7fff085bbf15 - 03 <- l
+0x7fff085bbf16 - 02 <- l
+0x7fff085bbf17 - 01 <- l
+0x7fff085bbf18 - c1 <- c2
+0x7fff085bbf19 - fa --
+0x7fff085bbf1a - a3 --
+0x7fff085bbf1b - 3c --
+0x7fff085bbf1c - b5 --
+0x7fff085bbf1d - 70 --
+0x7fff085bbf1e - 00 --
+0x7fff085bbf1f - 00 --
+
+c)
+int i = 4 bytes
+char c1 = 1 byte
+char c2 = 1 byte
+2 paddings para deixar terminar em multiplo de 4 e poder receber o incio da struct
+
+0x7ffe99d66300 - 04 <- i
+0x7ffe99d66301 - 03 <- i
+0x7ffe99d66302 - 02 <- i
+0x7ffe99d66303 - 01 <- i
+0x7ffe99d66304 - c1 <- c1
+0x7ffe99d66305 - c2 <- c2
+0x7ffe99d66306 - 00 --
+0x7ffe99d66307 - 00 --
+
+d) 
+a struct x2 tem ocupa 16 bytes na memória
+colocamos char c em seguida e depois 7 paddings, para deixar a memoria no ponto para receber o inicio da struct, que começa com long da struct x2
+
+0x7ffdcb77a140 - 08 <- l da struct x2
+0x7ffdcb77a141 - 07 <- l da struct x2
+0x7ffdcb77a142 - 06 <- l da struct x2
+0x7ffdcb77a143 - 05 <- l da struct x2
+0x7ffdcb77a144 - 04 <- l da struct x2
+0x7ffdcb77a145 - 03 <- l da struct x2
+0x7ffdcb77a146 - 02 <- l da struct x2
+0x7ffdcb77a147 - 01 <- l da struct x2
+0x7ffdcb77a148 - c1 <- c1 da struct x2
+0x7ffdcb77a149 - 8a -- 
+0x7ffdcb77a14a - 4b --
+0x7ffdcb77a14b - 98 --
+0x7ffdcb77a14c - 12 --
+0x7ffdcb77a14d - 74 --
+0x7ffdcb77a14e - 00 --
+0x7ffdcb77a14f - 00 --
+0x7ffdcb77a150 - c2 <- c
+0x7ffdcb77a151 - a2 --
+0x7ffdcb77a152 - 77 --
+0x7ffdcb77a153 - cb --
+0x7ffdcb77a154 - fd --
+0x7ffdcb77a155 - 7f --
+0x7ffdcb77a156 - 00 --
+0x7ffdcb77a157 - 00 --
+
+e)
+char c1 = 1 byte
+char c2 = 1 byte
+char c3 = 1 byte
+
+nao tem pandding, pois o inicio da struct é ocupa 1 byte, que pode ser colocado em qualquer valor de endereço;
+
+0x7ffd5ecfe695 - c1
+0x7ffd5ecfe696 - c2
+0x7ffd5ecfe697 - c3
+
+f)
+short s1 = 2 bytes
+2 paddings
+int 1 = 4 bytes
+char c[3] = 3 bytes
+1 padding
+short s2 = 2 bytes
+
+0x7ffdf8376c60 - 02 <- s1
+0x7ffdf8376c61 - 01 <- s1
+0x7ffdf8376c62 - 00 --
+0x7ffdf8376c63 - 00 --
+0x7ffdf8376c64 - 04 <- i
+0x7ffdf8376c65 - 03 <- i
+0x7ffdf8376c66 - 02 <- i
+0x7ffdf8376c67 - 01 <- i
+0x7ffdf8376c68 - c1 <- c[0]
+0x7ffdf8376c69 - c2 <- c[1]
+0x7ffdf8376c6a - c3 <- c[2]
+0x7ffdf8376c6b - a3 --
+0x7ffdf8376c6c - 02 <- s2
+0x7ffdf8376c6d - 01 <- s2
+0x7ffdf8376c6e - 00 --
+0x7ffdf8376c6f - 00 --
+
+Não entendi pq no final houve 2 padings, ja que ele terminou em multiplo de 2.
+Fui procurar sobre e entendi que isso acontece pq o tamanho total da struct 
+precisa ser múltiplo do maior alinhamento, ou seja, o int.
+
+
+g)
+char c[5] tem sizeof maior que int i
+
+char c[5] -> tamanho = 5 e alimnhamento = 1
+int i -> tamanho = 4 e alinhamento = 4
+
+O maior tamanho é 5 mas o maior alinhamento é 4. Então o sizeof dessa 
+union será o maior tamanho arredondado para mais para respeitar o 
+maior alinhamento. Ou seja: o maior tamanho é 5 e o maior alinhamento 
+é 4, portanto arredonda de 5 para 8, e preenche 3 panddings
+
+Entendi como funciona, mas ainda fico com a duvida:
+
+** pq preciso respeitar o alinhamento do int e ficar com 8 bytes se ele 
+nunca vai preecnher esses 3 panddings, nem com o int nem como char[5]??
+
+u1 (int)
+0x7ffd45ee7b40 - 04 
+0x7ffd45ee7b41 - 03
+0x7ffd45ee7b42 - 02
+0x7ffd45ee7b43 - 01
+0x7ffd45ee7b44 - fd
+0x7ffd45ee7b45 - 7f
+0x7ffd45ee7b46 - 00
+0x7ffd45ee7b47 - 00
+
+u1 (char)
+0x7ffd45ee7b40 - cc
+0x7ffd45ee7b41 - cc
+0x7ffd45ee7b42 - cc
+0x7ffd45ee7b43 - cc
+0x7ffd45ee7b44 - cc
+0x7ffd45ee7b45 - 7f
+0x7ffd45ee7b46 - 00
+0x7ffd45ee7b47 - 00
+
+h) Acontece a mesma coisa que o caso da union 1, mas agr o pandding é de 1 byte.
+** Fico com a mesma duvida, pq adicionar esse panding se ele nunca será preenchido?
