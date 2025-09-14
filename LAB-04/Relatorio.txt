@@ -1,3 +1,5 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
 1) c é uma variavel que guarda 150.
 quando chama-se a função dump, passamos o endereço de c, que é recebido por um ponteiro *p do tipo void, ou seja, generico
 
@@ -53,14 +55,11 @@ dump de i:
 
 2) **
 
-short 1 = -32765 (signed)
 32765 (unsigned) = 0111 1111 1111 1101
 invertendo: 1000 0000 0000 0010
-somando 1: 1000 0000 0000 0011 = 8 0 0 3
+somando 1: 1000 0000 0000 0011 = 8 0 0 3 (signed)
 
-** não consegui entender o restante do código, me confundi com a parte 
-que printa 8 0 0 3 como um inteiro, não sei se pra isso ele é convertido 
-pra outra base, confesso que me confundi com essa parte
+-32765 (signed) = 8 0 0 3
 
 3)
 
@@ -105,12 +104,47 @@ x como 0xffffffff é -1 pois quando a gente converte 1 em binario fica:
 por isso, x = -1 e y = 2, logo x<y, certo.
 
 2° programa
-como ele colocou unsigned int, o ffffffff na verdade, em decimal sera um numero enorme - e positivo
-** mas não entendi pq ele, ao printar, mostrar x=-1???
 
-3° programa, aqui ela compara um signed com unsigned, fiquei confusa com o resultado...
+x = 1111 1111 1111 1111 1111 1111 1111 1111 
+y = 0000 0000 0000 0000 0000 0000 0000 0010
 
-5) **
-** tambem não consegui fazer a 5° questão.
+Por isso, é claro que x>y
+
+3° programa
+
+int main (void) {
+  int x = 0xffffffff;
+  unsigned int y = 2;
+  printf("x=%d, y=%d\n", x, y);
+  printf("x é menor do que y? %s\n", (x<y)?"sim":"nao");
+  return 0;
+}
+
+quando a gente comparar um signed com unsigned, o compilador considera os dois como unsinged, 
+entao, ao comparar os valores em binario temos:
+
+x = 1111 1111 1111 1111 1111 1111 1111 1111 
+y = 0000 0000 0000 0000 0000 0000 0000 0010
+
+ou seja, ao olhar para os numeros em binario, e compará-los temos que x é maior que y
+
+
+5)
+
+sc = -1
+
+1 = 0000 0001
+transformando em -1:
+1111 1110 & 1 = 1111 1111 = -1
+
+portanto, ao colocar sc em ui, estamos colcoando 1111 1111 em 32 espaços de bit, os outros 24 
+espaços serão preenchidos com replicas do bit mais significativo, nesse caso o 1
+
+por isso, ao chamar a função dump e exibir os 4 bytes de endereço e os valores em hexadecial, vemos:
+
+0x7ffd1538ecf4 - ff
+0x7ffd1538ecf5 - ff
+0x7ffd1538ecf6 - ff
+0x7ffd1538ecf7 - ff
 
 
