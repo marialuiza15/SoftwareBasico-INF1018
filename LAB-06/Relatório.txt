@@ -1,0 +1,114 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+Onde tem a marcação ** é porque fiquei com alguma dúvida.
+
+1)
+
+C: int nums[] = {10, -21, -30, 45};
+A: nums:  .int  10, -21, -30, 45 // em .data pois é valor constante
+
+C: int main() 
+A: main: // em .text pois declara uma instrução do programa. e tbm preciso de um .globl main para que main seja acessivel por todo o programa
+
+C: int i, *p;
+A: // não há, pois não precisamos declarar variaveis em assembly
+
+C: for (i = 0, p = nums; i != 4; i++, p++)
+    C: i = 0 // é o contador 
+    A: movl  $0, %ebx
+
+    C: p = nums
+    A: movq  $nums, %r12 // coloca em r12 o endereço de nums
+
+    C: i != 4
+    A: cmpl  $4, %ebx // fica em L1 pq é a condição de parada do loop, entao quando for true, haverá um jump para fora de L2
+
+    C: i++
+    A: addl  $1, %ebx
+
+    C: p++
+    A: addq  $4, %r12 // adiciona 4 par andar 4 bytes de memoria, pois é o tamanho de um inteiro
+
+C: printf("%d\n", *p);
+A: Sf:  .string "%d\n" // primeiro declaramos a string em .data e depois chamamos em L1 call  printf
+
+C: }
+A: jmp  L1 // volta para L1, continuando o loop
+
+C: return 0;
+A: movq  $0, %rax // em L2, retorna 0
+
+** há alguns outros comando que me deixaram com muita duvida sobre pra que estão presentes. Vou procurar exclarecer essas duvidas em aula.
+
+2) 
+
+1° transformar o for em while
+
+for (i = 0, p = nums; i != 4; i++, p++){
+    sum += *p;
+  }
+
+i=0
+p=nums
+while(i!=4){
+    sum = sum + *p
+    i++
+    p++
+}
+
+
+.data
+nums:  .int  10, -21, -30, 45
+Sf:  .string "%d\n"
+sum: .int 0
+
+.text
+.globl main
+main:
+    movl  $0, %ebx // i=0
+    movq  $nums, %r12 // p=nums
+    jmp LOOP // entrando no while
+
+LOOP:
+    movl  $sum, %ebx // sum 
+    movq  (%r12), %ebx // sum = sum + *p
+    addl  $1, %ebx // i++
+    addq  $4, %r12 // p++
+
+    cmpl  $4, %ebx  /* if (ebx == 4) ? */
+    je  FORA_LOOP
+    jump LOOP
+
+FORA_LOOP:
+    movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
+    movl    %ebx, %esi   /* segundo parametro  (inteiro) */
+    call  printf       // imprimindo o valor de ebx
+
+    movq  $0, %rax  /* rax = 0  (valor de retorno) */
+    movq  -8(%rbp), %rbx
+    movq  -16(%rbp), %r12
+    leave
+    ret  
+
+**Não entendi muito bem como é a lógica que ficou na parte de finalização, do FORA_LOOP
+
+
+   
+
+
+
+
+int main() {
+  int i, *p;
+    i=0
+    p=nums
+    while(i!=4){
+        sum = sum + *p
+        i++
+        p++
+    }
+    
+  printf("%d\n", sum);
+  return 0;
+}
+
