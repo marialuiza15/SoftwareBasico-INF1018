@@ -67,6 +67,7 @@ sum: .int 0
 main:
     movl  $0, %ebx // i=0
     movq  $nums, %r12 // p=nums
+    cmpl  $4, %ebx  /* if (ebx == 4) ? */
     jmp LOOP // entrando no while
 
 LOOP:
@@ -93,22 +94,125 @@ FORA_LOOP:
 **Não entendi muito bem como é a lógica que ficou na parte de finalização, do FORA_LOOP
 
 
-   
 
-
-
+3)
+int par_or_impar(unsigned int x) {
+    if((x&1) == 1){
+        return 1;
+    }
+    return 0;
+}
 
 int main() {
-  int i, *p;
-    i=0
-    p=nums
-    while(i!=4){
-        sum = sum + *p
-        i++
-        p++
+    int nums[] = {10, -21, -30, 45};
+    int i, *p;
+    for (i = 0, p = nums; i != 4; i++, p++){
+        if (par_or_impar(*p)==0){
+            printf("%d\n", *p);
+        }
     }
-    
-  printf("%d\n", sum);
   return 0;
 }
 
+Modificando o código antes de passarpara assembly:
+
+    while(i!=4){
+        if((*p&1) == 0){
+            printf("%d\n", *p);
+        }
+        i++;
+        p++;
+    }
+  return 0;
+}
+
+/*DICIONARIO
+
+REG    VAR
+ebx    i = 0
+r12    p=nums
+*/
+
+Em assembly:
+
+.data
+nums:  .int  10, -21, -30, 45
+Sf:  .string "%d\n"
+
+.text
+.globl main
+main:
+    movl  $0, %ebx // i=0
+    movq  $nums, %r12 // p=nums
+    cmpl  $4, %ebx  /* if (ebx == 4) ? */
+    jz FORA_LOOP // pula o while caso ebx!=4
+    jump LOOP // caso a condição nao seja verdadeira de inicio
+
+LOOP:
+    cmpl  $4, %ebx  /* if (ebx == 4) ? */
+    jz FORA_LOOP
+    cmpl $0, (%r12) AND $1 // if((*p&1) == 0) ?? **nao sei se isso é permitido
+    jz PRINF 
+    addl  $1, %ebx // i++
+    addq  $4, %r12 // p++
+    jump LOOP
+
+
+PRINT:
+    movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
+    movl    %ebx, %esi   /* segundo parametro  (inteiro) */
+    call  printf       // imprimindo o valor de ebx
+    addl  $1, %ebx // i++
+    addq  $4, %r12 // p++
+    jump LOOP
+    
+4)
+
+** As modificações para agr usar byte seria movidicar as instreuções de 32 bits por instruções de 8 bits. 
+
+.data
+nums:  .byte  10, -21, -30, 45  
+Sf:  .string "%d\n"             # String de formato para printf
+
+.text
+.globl  main
+main:
+
+/********************************************************/
+/* mantenha este trecho aqui e nao mexa - prologo !!!   */
+  pushq   %rbp
+  movq    %rsp, %rbp
+  subq    $16, %rsp
+  movq    %rbx, -8(%rbp)
+  movq    %r12, -16(%rbp)
+/********************************************************/
+
+  movs  $0, %ebx         /* %ebx = 0; contador de iteração */
+  movq  $nums, %r12      /* %r12 = &nums; ponteiro para o array */
+
+L1:
+  cmps  $4, %ebx         /* if (ebx == 4) ? */
+  je    L2               /* goto L2 */
+
+  movb  (%r12), %al      /* %al = *r12 (valor do byte) */ // antes era movl
+  
+/*************************************************************/
+/* este trecho imprime o valor de %eax (estraga %eax)  */
+  movq    $Sf, %rdi      /* primeiro parâmetro (ponteiro para string) */
+  movs    %al, %esi      /* segundo parâmetro (byte) */
+  call   printf          /* chama a função printf */
+/*************************************************************/
+
+  adds  $1, %ebx         /* %ebx += 1; contador */ // antes era 4 pq se tratava de inteiro, agora como é byte, o contador do loop será só 1
+  addq  $1, %r12         /* %r12 += 1; ponteiro para o próximo byte */ // antes era addq $4, mas agora o ponteiro vai andar de 1 byte em 1, e nao de 4 em 4 como no inteiro
+  jmp   L1               /* goto L1 */
+
+L2:  
+/***************************************************************/
+/* mantenha este trecho aqui e nao mexa - finalizacao!!!!      */
+  movq  $0, %rax         /* %rax = 0 (valor de retorno) */
+  movq  -8(%rbp), %rbx
+  movq  -16(%rbp), %r12
+  leave
+  ret      
+/***************************************************************/

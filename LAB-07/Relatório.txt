@@ -1,0 +1,163 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+Onde tem a marcação ** é porque fiquei com alguma dúvida.
+
+1)
+
+C: char S2[] = {65, 108, 111, 32, 123, 103, 97, 108, 101, 114, 97, 125, 33, 0};
+A: S2:    .byte 65, 108, 111, 32, 123, 103, 97, 108, 101, 114, 97, 125, 33, 0 // em .data pois é declaração de constante
+
+C: int main() 
+A: main: // em .text pois declara uma instrução do programa. e tbm preciso de um .globl main para que main seja acessivel por todo o programa
+
+C: char *pc = S2;
+A: movq  $S2, %r12  /* r12 = &S2 */
+
+C: while (*pc)
+A: L1:
+  cmpb  $0, (%r12)  /* if (*pc == 0) ? */
+  je  L2          /* goto L2 */
+
+    C: printf("%c", *pc++);
+    A: // a string foi definida em data 
+        movsbl  (%r12), %eax    /* eax = *r12 (estendendo o byte para 32 bits) */
+        movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
+        movl    %eax, %esi   /* segundo parametro  (inteiro) */
+        movl  $0, %eax
+        call  printf       /* chama a funcao da biblioteca */
+
+    C: *pc++
+    A: addq  $1, %r12  /* r12 += 1; */
+
+C: printf("\n");
+A: L2:
+  movq    $Sf2, %rdi    /* primeiro parametro (ponteiro)*/
+  movl  $0, %eax
+  call  printf       /* chama a funcao da biblioteca */
+
+C: return 0;
+A: movq  $0, %rax  /* rax = 0  (valor de retorno) */
+    movq    -16(%rbp), %r12 /* recupera r12 */
+    movq    -8(%rbp), %rbx  /* recupera rbx */
+    leave
+    ret      
+
+2)
+Adicionei uma condição pra só printar o caracter quando ele nao for {} ou seja, quando o código dele nao for 123 e nao for 125
+Ao executar, printou: Alo galera!
+
+
+Assembly:
+A modificação nescessária é que antes de imprimir os caracteres, temos que adicionar comparadores para dar jump caso o caracter seja {ou }
+
+Dentro de L1, após extender o byte para 32, faremos:
+
+cmpb  $123, %al   /* Verifica se o caractere é '{' (ASCII 123) */
+je   L1_PULA      /* Se for '{', pula a impressão */
+cmpb  $125, %al   /* Verifica se o caractere é '}' (ASCII 125) */
+je   L1_PULA      /* Se for '}', pula a impressão */
+
+e ai em L1_PULA, a gente incrementa 1 no contador e chama denovo o L1, para continuar o loop com o proximo caracter
+
+L1_PULA:
+  addq  $1, %r12  /* r12 += 1; */
+  jmp  L1         /* goto L1; */
+
+3)
+O programa em C é simples de ser implementado, pois se trata de uma multiplicação de i*i dentro de um for com if
+
+Assembly:
+
+.data
+Sf: .string "%d\n"   /* String de formatação para printf */
+
+.text
+.globl main
+main:
+
+/********************************************************/
+/* Mantenha este trecho aqui e não mexa - prólogo !!!   */
+  pushq   %rbp
+  movq    %rsp, %rbp
+  subq    $16, %rsp
+  movq    %rbx, -8(%rbp)  /* guarda rbx */
+  movq    %r12, -16(%rbp)  /* guarda r12 */
+/********************************************************/
+
+    movl $1, %eax       // Inicializa i com 1 
+
+L1:
+    cmp $10, %eax // Verifica se i<=10
+    jg L2 //transfere se superior
+
+    imull %eax, %eax //  guarda em op2 resultado de eax * eax
+
+    movq    $Sf, %rdi // traz a string de formatação q foi definida em data
+    movl    %eax, %esi // passa o valor para o parametro do printf
+    movl    $0, %eax // zera eax pra indicar a qtd de argumentos restantes
+
+    call printf // chama printf
+
+    addl    $1, %eax // incrementa 1
+    jmp L1 // volta para o inicio do loop
+
+L2: 
+    /***************************************************************/
+    /* Mantenha este trecho aqui e não mexa - finalização!!!!      */
+    movq  $0, %rax  /* rax = 0  (valor de retorno) */
+    movq    -16(%rbp), %r12 /* recupera r12 */
+    movq    -8(%rbp), %rbx  /* recupera rbx */
+    leave
+    ret      
+    /***************************************************************/
+
+4)
+.data
+nums:   .int 65, -105, 111, 34   /* Array de inteiros nums */
+Sf:     .string "soma = %d\n"     /* String de formatação para printf */
+
+.text
+.globl main
+main:
+
+    /********************************************************/
+    /* Mantenha este trecho aqui e não mexa - prólogo !!!   */
+    pushq   %rbp
+    movq    %rsp, %rbp
+    subq    $16, %rsp
+    movq    %rbx, -8(%rbp)  /* guarda rbx */
+    movq    %r12, -16(%rbp)  /* guarda r12 */
+    /********************************************************/
+
+    movl    $0, %ecx // i=0
+    movl    $0, %ebx // s=0
+
+L1:
+    cmp $4, %ecx // compara i com 4
+    jge L2 // i>=4
+
+    movq    $nums, %rdi // endereço inicial de nums em rdi
+    movl    %ecx, %eax  // passa i para eax
+    imull   $4, %eax, %eax // i = i*4
+    addq    %rdi, %rax // soma endereço + i*4
+    movl    (%rax), %edx 
+    addl    %edx, %ebx // acumulador de ebx
+
+    addl    $1, %ecx   // i++
+    jmp     L1      // volta pro loop no próximo endereço
+
+
+L2:  
+    movq    $Sf, %rdi     
+    movl    %ebx, %esi    
+    movl    $0, %eax       
+    call    printf       
+
+    /***************************************************************/
+    /* Mantenha este trecho aqui e não mexa - finalização!!!!      */
+    movq  $0, %rax  /* rax = 0  (valor de retorno) */
+    movq    -16(%rbp), %r12 /* recupera r12 */
+    movq    -8(%rbp), %rbx  /* recupera rbx */
+    leave
+    ret      
+    /***************************************************************/
