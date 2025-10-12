@@ -1,0 +1,29 @@
+1)
+ ao executar ex1 no terminal, apareceu:
+
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-08 (main) $ ./ex1
+total 24
+ 0 -rw-rw-rw- 1 codespace codespace     0 Oct  7 14:13 Relatorio.txt
+16 -rwxrwxrwx 1 codespace codespace 15832 Oct 12 00:28 ex1
+ 4 -rw-rw-rw- 1 codespace codespace   781 Oct 12 00:29 ex1.c
+ 4 -rw-rw-rw- 1 codespace codespace   351 Oct 12 00:29 ex1.s
+
+ ou seja, realmente executou o comando ls e listou tudo naquele diretório
+
+2) 
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-08 (main) $ gcc -Wall -no-pie -o ex2 ex2.c
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-08 (main) $ ./ex2
+3
+0
+7
+8
+0
+
+após colocar .section .note.GNU-stack,"",@progbits no fim do código, ele compilou com sucesso e exibiu no terminal, o mesmo que o codigo c:
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-08 (main) $ gcc -Wall -no-pie -o ex2 ex2.s
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-08 (main) $ ./ex2
+3
+0
+7
+8
+0
