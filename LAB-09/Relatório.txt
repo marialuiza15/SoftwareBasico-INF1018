@@ -1,0 +1,29 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+1) O código assembly só compilou quando coloquei: .section .note.GNU-stack,"",@progbits no final
+
+
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-09 (main) $ gcc -Wall -no-pie -o prog add.s main.c
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-09 (main) $ ./prog
+6
+
+2) varias vezes o resultado da execução foi: 
+Digite um número inteiro: 5
+Fatorial de 5 = 1671499776
+
+pq eu nao havia reservado espaço que mantem alinhamento de 16 bytes
+pois eu achava que nao precisava mas como faço chamada a função, é nescessairo
+
+ai quando adicionei subq $16, %rsp, funcionou
+Digite um número inteiro: 5
+Fatorial de 5 = 120
+
+3)varias vezes o resultado da execução foi: Segmentation fault (core dumped)
+
+isso aconteceu pq eu estava tentando inserir o valor de s em a[i] usando o registrador que guardava a cópia temporária do vetor,
+quando mudei de r14d para (%r13d), funcionou, pois ele passou a acessar o conteudo de a[i] e coloca o valor de s lá dentro
+
+Vetor original:
+1 2 3 0 4 5 0 6 
+Vetor após foo:
+1 2 3 0 4 5 0 6 
