@@ -1,0 +1,21 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
+1) O resultado no terminal foi: resultado de add: 1368388560
+troquei a comparação de cmpl $0, %edi  para testq %rdi, %rdi 
+
+pq no cmpl, fica: if(x==0)
+
+no test, fica if(x==NULL), que é o que queremos
+
+mas ainda assim, no terminal só imprime esse valor, que paresse ser 
+sujeira de memória, mas não consigo identificar onde ocorre o rpoblema que causa isso
+
+2)add2 funcionou, e exibiu no terminal: resultado de add: 45
+
+3) no enunciado a funcao boo, na definição esta como void, mas na referencia no codigo da main esta com int, 
+isso deu erros na hora de compilar, corrigi prar void para funcionar
+
+4) esse código, quando compilado com: cc -Wall -no-pie -o ex4 ex4.s main.c
+fica dando o erro: Segmentation fault (core dumped)
+
+verifiquei que esse erro é pq o programa acessou memória inválida, mas nao consegui identificar o erro que causou isso
