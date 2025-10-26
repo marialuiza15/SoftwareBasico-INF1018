@@ -1,0 +1,21 @@
+
+
+1)
+
+no primeiro exercicio, quando tentei chamar depois de compilar, deu o erro: 
+Segmentation fault (core dumped)
+
+aconteceu pq eu escrevi subq 16, %rsp, assim o assembly tentou acessar 
+a memória de endereço 0x10, por isso deu acesso inválido
+
+colocando o $, funcionou
+
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-11 (main) $ ./ex1
+numero: 0
+0
+
+2)  
+
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-11 (main) $ gcc -Wall -o ex2 ex2.c ex2.s
+@marialuiza15 ➜ /workspaces/SoftwareBasico-INF1018/LAB-11 (main) $ ./ex2
+20
