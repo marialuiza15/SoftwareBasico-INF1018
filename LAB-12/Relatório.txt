@@ -1,3 +1,5 @@
+MARIA LUIZA LIMA BASTOS - 2320468
+
 
 ao forçar flags pra desabilitar proteções, recebi o retorno:
 make: *** No rule to make target 'clean'.  Stop.
